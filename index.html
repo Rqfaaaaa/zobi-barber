@@ -17,6 +17,11 @@ select, input { width: 100%; padding: 12px; border-radius: 8px; border: 1px soli
                 background: #1c1c1c; color: #fff; font-size: 16px; box-sizing: border-box; }
 button { width: 100%; margin-top: 20px; padding: 14px; border: none; border-radius: 8px;
          background: #c9a227; color: #111; font-size: 17px; font-weight: bold; cursor: pointer; }
+.nota { font-size: 14px; color: #aaa; margin-top: 12px; }
+footer { text-align: center; padding: 24px 16px; margin-top: 32px;
+         border-top: 1px solid #333; color: #aaa; }
+footer h3 { color: #fff; }
+footer a { color: #c9a227; }
   </style>
 </head>
 <body>
@@ -43,7 +48,14 @@ button { width: 100%; margin-top: 20px; padding: 14px; border: none; border-radi
 <select id="hora"></select>
 
 <button onclick="reservar()">Reservar por WhatsApp</button>
+<p class="nota">Si no puedes asistir, avísanos con al menos 2 horas de anticipación para darle el turno a otro cliente.</p>
   </main>
+  <footer>
+  <h3>Encuentranos aqui</h3>
+  <p>Diagonal 12A, 44-7 Valledupar, Cesar</p>
+  <p>Horario: Lunes a domingo, 9:00 am - 8:00 pm</p>
+  <p><a href="https://www.instagram.com/barber_zobi?exln=ajJ5YjgwNHVlaXhx" target="_blank">Instagram</a></p>
+</footer>
 
   <script>
     const servicios = [
