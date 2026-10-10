@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zobi Barber - Reserva tu cita</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #111; color: #fff; }
+    header { padding: 24px 16px; text-align: center; border-bottom: 2px solid #c9a227; }
+    h1 { margin: 0; color: #c9a227; }
+    main { max-width: 480px; margin: 0 auto; padding: 16px; }
+    .card { background: #1c1c1c; border-radius: 10px; padding: 14px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; }
+    .precio { color: #c9a227; font-weight: bold; }
+    label { display: block; margin: 14px 0 6px; }
+select, input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333;
+                background: #1c1c1c; color: #fff; font-size: 16px; box-sizing: border-box; }
+button { width: 100%; margin-top: 20px; padding: 14px; border: none; border-radius: 8px;
+         background: #c9a227; color: #111; font-size: 17px; font-weight: bold; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Zobi Barber</h1>
+    <p>Reserva tu cita de manera facil y sencilla!!</p>
+  </header>
+
+  <main>
+    <h2>Servicios</h2>
+    <div id="servicios"></div>
+    <h2>Reserva tu cita</h2>
+
+<label>Servicio</label>
+<select id="selServicio"></select>
+
+<label>Barbero</label>
+<select id="selBarbero"></select>
+
+<label>Fecha</label>
+<input type="date" id="fecha">
+
+<label>Hora</label>
+<select id="hora"></select>
+
+<button onclick="reservar()">Reservar por WhatsApp</button>
+  </main>
+
+  <script>
+    const servicios = [
+      { nombre: "Corte clásico", precio: 20000 },
+      { nombre: "Corte + barba", precio: 25000 },
+      { nombre: "Corte Niño", precio: 15000 }
+
+    ];
+
+    const contenedor = document.getElementById("servicios");
+    servicios.forEach(s => {
+      contenedor.innerHTML += `
+        <div class="card">
+          <span>${s.nombre}</span>
+          <span class="precio">$${s.precio.toLocaleString("es-CO")}</span>
+        </div>`;
+    });
+    const barberos = ["Cholu", "Andrés", "Julher"];
+const numeroWhatsApp = "573054471325";
+
+const selServicio = document.getElementById("selServicio");
+const selBarbero = document.getElementById("selBarbero");
+
+servicios.forEach(s => {
+  selServicio.innerHTML += `<option value="${s.nombre}">${s.nombre}</option>`;
+});
+barberos.forEach(b => {
+  selBarbero.innerHTML += `<option value="${b}">${b}</option>`;
+});
+
+function reservar() {
+  const fecha = document.getElementById("fecha").value;
+  const hora = document.getElementById("hora").value;
+
+  if (!fecha || !hora) {
+    alert("Elige la fecha y la hora");
+    return;
+  }
+
+  const mensaje = `Hola, quiero reservar en Zobi Barber:
+Servicio: ${selServicio.value}
+Barbero: ${selBarbero.value}
+Fecha: ${fecha}
+Hora: ${hora}`;
+
+  window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`, "_blank");
+}
+const diasMaximos = 7 
+
+const hoy = new Date();
+const limite = new Date();
+limite.setDate(hoy.getDate() + diasMaximos);
+
+const inputFecha = document.getElementById("fecha");
+inputFecha.min = hoy.toLocaleDateString("en-CA");
+inputFecha.max = limite.toLocaleDateString("en-CA");
+
+const horaApertura = 9 
+const horaCierre = 20
+
+const selHora = document.getElementById("hora");
+for (let h= horaApertura; h < horaCierre; h++) {
+    selHora.innerHTML += `<option value="${h}:00">${h}:00</option>`;
+}
+  </script>
+</body>
+</html>
