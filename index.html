@@ -82,6 +82,16 @@ function reservar() {
     alert("Elige la fecha y la hora");
     return;
   }
+  const fechaElegida = new Date(fecha + "T00:00:00");
+const inicioHoy = new Date();
+inicioHoy.setHours(0, 0, 0, 0);
+const ultimoDia = new Date(inicioHoy);
+ultimoDia.setDate(inicioHoy.getDate() + diasMaximos);
+
+if (fechaElegida < inicioHoy || fechaElegida > ultimoDia) {
+  alert("Solo se puede reservar desde hoy hasta los próximos " + diasMaximos + " días");
+  return;
+}
 
   const mensaje = `Hola, quiero reservar en Zobi Barber:
 Servicio: ${selServicio.value}
