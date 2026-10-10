@@ -115,9 +115,26 @@ const horaApertura = 9
 const horaCierre = 20
 
 const selHora = document.getElementById("hora");
-for (let h= horaApertura; h < horaCierre; h++) {
+function llenarHoras() {
+  selHora.innerHTML = "";
+
+  const fechaElegida = document.getElementById("fecha").value;
+  const ahora = new Date();
+  const esHoy = fechaElegida === ahora.toLocaleDateString("en-CA");
+
+  for (let h = horaApertura; h < horaCierre; h++) {
+    if (esHoy && h <= ahora.getHours()) {
+      continue;
+    }
     selHora.innerHTML += `<option value="${h}:00">${h}:00</option>`;
+  }
+
+  if (selHora.innerHTML === "") {
+    selHora.innerHTML = `<option value="">No hay horas disponibles hoy</option>`;
+  }
 }
+inputFecha.addEventListener("change", llenarHoras);
+llenarHoras();
   </script>
 </body>
 </html>
