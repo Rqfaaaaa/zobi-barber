@@ -9,9 +9,7 @@
     <style>
         :root {
             --acento: #e5343d;
-            /* rojo del logo */
             --acento2: #1e63d6;
-            /* azul del logo */
         }
 
         body {
@@ -111,7 +109,7 @@
 
         .aviso {
             font-size: 14px;
-            color: #ccc;
+            color: lch(82.05% 0.01 296.81);
             margin-top: 20px;
         }
 
@@ -167,24 +165,90 @@
             object-fit: cover;
             border-radius: 10px;
         }
+
+        .equipo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .barbero-card {
+            background: #1c1c1c;
+            border-radius: 12px;
+            padding: 14px 8px;
+            text-align: center;
+            border-top: 3px solid var(--acento);
+        }
+
+        .barbero-card img {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--acento2);
+        }
+
+        .barbero-card b {
+            display: block;
+            margin-top: 8px;
+        }
+
+        .barbero-card span {
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            flex: 0 0 auto;
+            width: auto;
+            margin: 0;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: #1c1c1c;
+            color: #fff;
+            border: 1px solid #333;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .chip.activo {
+            background: var(--acento);
+            border-color: var(--acento);
+        }
+
+        .card {
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
     <header>
-       <img src="img/logo.png" alt="Logo de Zobi Barber's" class="logo">
+        <img src="img/logo.png" alt="Logo de Zobi Barber's" class="logo">
         <h1>Zobi Barber</h1>
         <p>Reserva tu cita de manera facil y sencilla!!</p>
     </header>
 
     <main>
         <h2>Servicios</h2>
+        <div id="categorias" class="chips"></div>
         <div id="servicios"></div>
         <h2>Nuestros cortes</h2>
         <div class="galeria">
             <img src="img/corte1.jpg" alt="Corte con diseño en la nuca">
             <img src="img/corte2.jpg" alt="Corte con diseño en la nuca">
         </div>
+        <h2>Nuestro equipo</h2>
+        <div id="equipo" class="equipo"></div>
         <h2>Reserva tu cita</h2>
         <label>Tu nombre</label>
         <input type="text" id="nombre" placeholder="Ej: Kevin">
@@ -225,20 +289,58 @@
 
     <script>
         const servicios = [
-            {nombre: "Corte clásico", precio: 20000, profesionales: ["Cholu", "Andrés", "Julher"]},
-            {nombre: "Corte + barba", precio: 25000, profesionales: ["Cholu", "Andrés", "Julher"]},
-            {nombre: "Corte Niño", precio: 15000, profesionales: ["Cholu", "Andrés", "Julher"]},
-            {nombre: "Manicure", precio: 15000, profesionales: ["Manicurista"]}
+            {nombre: "Corte adultos", precio: 20000, categoria: "Cortes", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Corte niños", precio: 18000, categoria: "Cortes", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Mascarilla", precio: 5000, categoria: "Barba y cejas", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Barba", precio: 8000, categoria: "Barba y cejas", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Cejas", precio: 5000, categoria: "Barba y cejas", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Uñas tradicionales", precio: 15000, categoria: "Uñas", profesionales: ["Manicurista"]},
+            {nombre: "Uñas semipermanentes", precio: 30000, categoria: "Uñas", profesionales: ["Manicurista"]},
+            {nombre: "Keratina", precio: 80000, categoria: "Tratamientos", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Platinado", precio: 170000, categoria: "Tratamientos", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Peinados", precio: 10000, categoria: "Cortes", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Combo 2: corte + barba clásica", precio: 26000, categoria: "Combos", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Combo 3: corte + barba + cejas", precio: 30000, categoria: "Combos", profesionales: ["Cholu", "Andrés", "Julher"]},
+            {nombre: "Corte completo", precio: 50000, categoria: "Combos", profesionales: ["Cholu", "Andrés", "Julher"]}
         ];
 
-        const contenedor = document.getElementById("servicios");
-        servicios.forEach(s => {
-            contenedor.innerHTML += `
-        <div class="card">
+        const categorias = ["Todos", "Cortes", "Barba y cejas", "Combos", "Uñas", "Tratamientos"];
+let categoriaActual = "Todos";
+
+function dibujarCategorias() {
+  const caja = document.getElementById("categorias");
+  caja.innerHTML = "";
+  categorias.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "chip" + (c === categoriaActual ? " activo" : "");
+    b.textContent = c;
+    b.onclick = () => { categoriaActual = c; dibujarCategorias(); dibujarServicios(); };
+    caja.appendChild(b);
+  });
+}
+
+function dibujarServicios() {
+  const contenedor = document.getElementById("servicios");
+  contenedor.innerHTML = "";
+  servicios
+    .filter(s => categoriaActual === "Todos" || s.categoria === categoriaActual)
+    .forEach(s => {
+      contenedor.innerHTML += `
+        <div class="card" onclick="elegirServicio('${s.nombre}')">
           <span>${s.nombre}</span>
           <span class="precio">$${s.precio.toLocaleString("es-CO")}</span>
         </div>`;
-        });
+    });
+}
+
+function elegirServicio(nombre) {
+  selServicio.value = nombre;
+  selServicio.dispatchEvent(new Event("change"));
+  selServicio.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+dibujarCategorias();
+dibujarServicios();
         const barberos = ["Cholu", "Andrés", "Julher"];
         const numeroWhatsApp = "573054471325";
 
@@ -342,6 +444,22 @@ Quedo atento a los datos para pagar el abono. Acepto la política de cancelació
         }
         selServicio.addEventListener("change", mostrarAbono);
         mostrarAbono();
+        const equipo = [
+            {nombre: "Cholu", rol: "Barbero", foto: "img/barberoc.jpg"},
+            {nombre: "Andrés", rol: "Barbero", foto: "img/barberoa.jpg"},
+            {nombre: "Julher", rol: "Barbero", foto: "img/barberoj.jpg"},
+            {nombre: "Manicurista", rol: "Uñas", foto: "img/manicurista.jpg"}
+        ];
+
+        const contenedorEquipo = document.getElementById("equipo");
+        equipo.forEach(b => {
+            contenedorEquipo.innerHTML += `
+    <div class="barbero-card">
+      <img src="${b.foto}" alt="Foto de ${b.nombre}">
+      <b>${b.nombre}</b>
+      <span>${b.rol}</span>
+    </div>`;
+        });
 
     </script>
 </body>
