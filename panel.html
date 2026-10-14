@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zobi Barber's - Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root { --acento: #e5343d; --acento2: #1e63d6; --fondo: #0f0f12; --panel: #1a1a20;
+            --borde: #2a2a32; --texto: #f2f2f2; --suave: #9a9aa5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: var(--fondo); color: var(--texto); }
+    [hidden] { display: none !important; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 10px;
+             padding: 14px 16px; border-bottom: 2px solid var(--acento); }
+    header h1 { font-family: 'Oswald', Arial, sans-serif; letter-spacing: 2px; font-size: 20px; margin: 0; }
+    header .quien { font-size: 13px; color: var(--suave); }
+    main { max-width: 720px; margin: 0 auto; padding: 16px; }
+    .caja { background: var(--panel); border: 1px solid var(--borde); border-radius: 12px; padding: 16px; }
+    label { display: block; font-size: 14px; margin-top: 12px; }
+    input, select { width: 100%; padding: 12px; font-size: 16px; margin-top: 4px; border-radius: 8px;
+                    border: 1px solid var(--borde); background: #101015; color: var(--texto); }
+    .btn { padding: 10px 14px; min-height: 44px; border: 0; border-radius: 8px; font-size: 15px;
+           font-weight: bold; cursor: pointer; color: #fff; background: #3a3a44; }
+    .btn.principal { background: var(--acento); width: 100%; margin-top: 16px; }
+    .btn.ok { background: #2e9e5b; }
+    .btn.mal { background: #7a1f24; }
+    .barra { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: end; margin-bottom: 12px; }
+    .barra label { margin-top: 0; }
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0; }
+    .stat { background: var(--panel); border: 1px solid var(--borde); border-radius: 10px; padding: 10px; }
+    .stat b { display: block; font-size: 20px; margin-top: 2px; }
+    .stat span { font-size: 12px; color: var(--suave); }
+    .medios { font-size: 13px; color: var(--suave); margin-bottom: 12px; }
+    .cita { background: var(--panel); border: 1px solid var(--borde); border-left: 4px solid var(--suave);
+            border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+    .cita.e-pendiente { border-left-color: #f5a524; }
+    .cita.e-confirmada { border-left-color: var(--acento2); }
+    .cita.e-completada { border-left-color: #2e9e5b; }
+    .cita.e-cancelada, .cita.e-no_asistio { border-left-color: #6b2227; opacity: 0.75; }
+    .fila { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+    .hora { font-size: 18px; font-weight: bold; }
+    .estado { font-size: 12px; padding: 3px 8px; border-radius: 999px; background: #2a2a32; }
+    .detalle { font-size: 14px; color: var(--suave); margin-top: 4px; }
+    .detalle a { color: #8ab4ff; }
+    .acciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .acciones select { width: auto; margin: 0; min-height: 44px; }
+    #aviso, #msgLogin { margin: 10px 0; padding: 10px; border-radius: 8px; font-size: 14px; }
+    #aviso.ok { background: #1d5c2e; }
+    #aviso.error, #msgLogin { background: #7a1f24; }
+    #msgLogin:empty { display: none; }
+    .vacio { text-align: center; color: var(--suave); padding: 24px 0; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ZOBI BARBER'S</h1>
+    <div>
+      <span class="quien" id="quien"></span>
+      <button class="btn" id="btnSalir" hidden>Salir</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- PANTALLA 1: inicio de sesión -->
+    <section id="vistaLogin" class="caja">
+      <h2 style="margin-top:0">Ingresar</h2>
+      <label>Correo
+        <input type="email" id="email" autocomplete="username">
+      </label>
+      <label>Clave
+        <input type="password" id="clave" autocomplete="current-password">
+      </label>
+      <button class="btn principal" id="btnEntrar">Entrar</button>
+      <div id="msgLogin"></div>
+    </section>
+
+    <!-- PANTALLA 2: panel (se muestra solo con sesión iniciada) -->
+    <section id="vistaPanel" hidden>
+      <div class="barra">
+        <label>Fecha
+          <input type="date" id="fecha">
+        </label>
+        <button class="btn" id="btnHoy">Hoy</button>
+        <button class="btn" id="btnActualizar">Actualizar</button>
+      </div>
+
+      <label id="bloqueFiltro" hidden>Ver agenda de
+        <select id="filtroProf"></select>
+      </label>
+
+      <div id="aviso" hidden></div>
+      <div class="stats" id="stats"></div>
+      <div class="medios" id="medios"></div>
+      <div id="lista"></div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script>
+    // ---------- CONEXIÓN (pega tus dos datos, igual que en prueba-conexion.html) ----------
+    const SUPABASE_URL = "https://lsiucqxeqnclhbleilwj.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_c_sMP2zXDxWILQFNNgm9_Q_mhjlwPKq";
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Estos medios de pago deben ser EXACTAMENTE los mismos que acepta la función de la base
+    const MEDIOS_PAGO = ["Efectivo", "Nequi", "Daviplata", "Transferencia"];
+    const ETIQUETA = { pendiente: "Pendiente", confirmada: "Confirmada", completada: "Completada",
+                       cancelada: "Cancelada", no_asistio: "No asistió", en_espera: "En espera" };
+
+    // ---------- DATOS EN MEMORIA ----------
+    let perfil = null;            // { rol, profesional_id } de quien entró
+    let nombreServicio = {};      // id -> nombre del servicio
+    let nombreProfesional = {};   // id -> nombre del profesional
+    let citas = [];               // citas del día que la base le deja ver a esta persona
+
+    const $ = id => document.getElementById(id);
+
+    // ---------- AYUDAS ----------
+    // El nombre del cliente lo escribe cualquier persona desde la web pública.
+    // Antes de mostrarlo lo "limpiamos" para que nadie pueda meter código en tu panel.
+    function esc(texto) {
+      return String(texto ?? "").replace(/[&<>"']/g, c =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+    function dinero(n) { return "$" + Number(n).toLocaleString("es-CO"); }
+    function hoyBogota() { return new Date().toLocaleDateString("en-CA", { timeZone: "America/Bogota" }); }
+    function horaBonita(h) {
+      const [hh, mm] = h.split(":");
+      const n = Number(hh);
+      return (n % 12 || 12) + ":" + mm + " " + (n >= 12 ? "pm" : "am");
+    }
+    function aviso(texto, esOk) {
+      const caja = $("aviso");
+      caja.textContent = texto;
+      caja.className = esOk ? "ok" : "error";
+      caja.hidden = false;
+    }
+
+    // ---------- PANTALLAS ----------
+    function mostrarLogin(mensaje) {
+      $("vistaPanel").hidden = true;
+      $("vistaLogin").hidden = false;
+      $("btnSalir").hidden = true;
+      $("quien").textContent = "";
+      $("msgLogin").textContent = mensaje || "";
+    }
+
+    // ---------- PASO 1: ENTRAR ----------
+    async function entrar() {
+      $("msgLogin").textContent = "";
+      const { error } = await sb.auth.signInWithPassword({
+        email: $("email").value.trim(),
+        password: $("clave").value
+      });
+      if (error) { $("msgLogin").textContent = "Correo o clave incorrectos."; return; }
+      $("clave").value = "";
+      await iniciarPanel();
+    }
+
+    async function salir() {
+      await sb.auth.signOut();
+      mostrarLogin();
+    }
+
+    // ---------- PASO 2: SABER QUIÉN ES (dueño o profesional) ----------
+    async function iniciarPanel() {
+      const { data: sesion } = await sb.auth.getUser();
+      const usuario = sesion && sesion.user;
+      if (!usuario) { mostrarLogin(); return; }
+
+      const rp = await sb.from("perfiles").select("rol, profesional_id")
+        .eq("user_id", usuario.id).maybeSingle();
+      if (rp.error || !rp.data) {
+        await sb.auth.signOut();
+        mostrarLogin("Tu cuenta todavía no tiene un rol asignado. Habla con quien administra el sistema.");
+        return;
+      }
+      perfil = rp.data;
+
+      // Nombres para mostrar (los ids solos no le dicen nada a nadie)
+      const rs = await sb.from("servicios").select("id, nombre");
+      const rpf = await sb.from("profesionales").select("id, nombre");
+      if (rs.error || rpf.error) { mostrarLogin("No pude leer el catálogo."); return; }
+      nombreServicio = {};
+      nombreProfesional = {};
+      rs.data.forEach(s => { nombreServicio[s.id] = s.nombre; });
+      rpf.data.forEach(p => { nombreProfesional[p.id] = p.nombre; });
+
+      // Preparar pantalla según el rol
+      $("vistaLogin").hidden = true;
+      $("vistaPanel").hidden = false;
+      $("btnSalir").hidden = false;
+      $("fecha").value = hoyBogota();
+
+      if (perfil.rol === "dueno") {
+        $("quien").textContent = "Dueño";
+        $("bloqueFiltro").hidden = false;
+        $("filtroProf").innerHTML = '<option value="todos">Todos</option>' +
+          rpf.data.map(p => `<option value="${p.id}">${esc(p.nombre)}</option>`).join("");
+      } else {
+        $("quien").textContent = nombreProfesional[perfil.profesional_id] || "Profesional";
+        $("bloqueFiltro").hidden = true;
+      }
+
+      cargarCitas();
+    }
+
+    // ---------- PASO 3: LEER LAS CITAS (la base decide cuáles puede ver cada quien) ----------
+    async function cargarCitas() {
+      $("aviso").hidden = true;
+      const { data, error } = await sb.from("citas")
+        .select("id, hora, nombre_cliente, telefono_cliente, estado, precio, abono, metodo_pago, profesional_id, servicio_id")
+        .eq("fecha", $("fecha").value)
+        .order("hora", { ascending: true });
+      if (error) { aviso("No pude cargar las citas: " + error.message, false); return; }
+      citas = data;
+      dibujar();
+    }
+
+    // ---------- PASO 4: DIBUJAR ----------
+    function dibujar() {
+      let visibles = citas;
+      if (perfil.rol === "dueno" && $("filtroProf").value !== "todos") {
+        visibles = citas.filter(c => String(c.profesional_id) === $("filtroProf").value);
+      }
+
+      // Resumen del día
+      const porAtender = visibles.filter(c => c.estado === "pendiente" || c.estado === "confirmada").length;
+      const hechas = visibles.filter(c => c.estado === "completada");
+      const totalHechas = hechas.reduce((suma, c) => suma + c.precio, 0);
+      const noAsistio = visibles.filter(c => c.estado === "no_asistio").length;
+      $("stats").innerHTML = `
+        <div class="stat"><span>Por atender</span><b>${porAtender}</b></div>
+        <div class="stat"><span>Completadas</span><b>${hechas.length}</b></div>
+        <div class="stat"><span>Total completado</span><b>${dinero(totalHechas)}</b></div>
+        <div class="stat"><span>No asistieron</span><b>${noAsistio}</b></div>`;
+
+      const porMedio = {};
+      hechas.forEach(c => { porMedio[c.metodo_pago] = (porMedio[c.metodo_pago] || 0) + c.precio; });
+      const partes = Object.keys(porMedio).map(m => esc(m) + ": " + dinero(porMedio[m]));
+      $("medios").textContent = partes.length ? "Por medio de pago → " + partes.join(" · ") : "";
+
+      // Lista de citas
+      if (visibles.length === 0) {
+        $("lista").innerHTML = '<div class="vacio">No hay citas para este día.</div>';
+        return;
+      }
+      $("lista").innerHTML = visibles.map(c => `
+        <div class="cita e-${c.estado}">
+          <div class="fila">
+            <span class="hora">${horaBonita(c.hora)}</span>
+            <span class="estado">${ETIQUETA[c.estado] || esc(c.estado)}</span>
+          </div>
+          <div class="detalle">${esc(c.nombre_cliente)} ·
+            <a href="https://wa.me/57${esc(c.telefono_cliente)}" target="_blank" rel="noopener">${esc(c.telefono_cliente)}</a></div>
+          <div class="detalle">${esc(nombreServicio[c.servicio_id] || "")}${perfil.rol === "dueno" ? " · con " + esc(nombreProfesional[c.profesional_id] || "") : ""}</div>
+          <div class="detalle">${dinero(c.precio)} · abono ${dinero(c.abono)}${c.metodo_pago ? " · pagó con " + esc(c.metodo_pago) : ""}</div>
+          <div class="acciones">${botones(c)}</div>
+        </div>`).join("");
+    }
+
+    // Qué botones se muestran según el estado de la cita
+    function botones(c) {
+      if (c.estado === "pendiente") {
+        return `<button class="btn ok" data-accion="confirmada" data-id="${c.id}">Abono recibido</button>
+                <button class="btn mal" data-accion="cancelada" data-id="${c.id}">Cancelar</button>`;
+      }
+      if (c.estado === "confirmada") {
+        const opciones = MEDIOS_PAGO.map(m => `<option>${m}</option>`).join("");
+        return `<select id="mp-${c.id}">${opciones}</select>
+                <button class="btn ok" data-accion="completada" data-id="${c.id}">Completar</button>
+                <button class="btn" data-accion="no_asistio" data-id="${c.id}">No asistió</button>
+                <button class="btn mal" data-accion="cancelada" data-id="${c.id}">Cancelar</button>`;
+      }
+      return "";
+    }
+
+    // ---------- PASO 5: CAMBIAR EL ESTADO (llama a la función de la base de datos) ----------
+    async function cambiarEstado(id, estado) {
+      if (estado === "cancelada" && !confirm("¿Cancelar esta cita? La hora quedará libre.")) return;
+      if (estado === "no_asistio" && !confirm("¿Marcar que el cliente no asistió?")) return;
+
+      const metodo = estado === "completada" ? $("mp-" + id).value : null;
+      const { error } = await sb.rpc("cambiar_estado_cita", {
+        p_id: id, p_estado: estado, p_metodo_pago: metodo
+      });
+      if (error) { aviso(error.message, false); return; }
+      aviso("Listo, cita actualizada.", true);
+      cargarCitas();
+    }
+
+    // ---------- CONECTAR BOTONES Y EVENTOS ----------
+    $("btnEntrar").addEventListener("click", entrar);
+    $("clave").addEventListener("keydown", e => { if (e.key === "Enter") entrar(); });
+    $("btnSalir").addEventListener("click", salir);
+    $("btnHoy").addEventListener("click", () => { $("fecha").value = hoyBogota(); cargarCitas(); });
+    $("btnActualizar").addEventListener("click", cargarCitas);
+    $("fecha").addEventListener("change", cargarCitas);
+    $("filtroProf").addEventListener("change", dibujar);
+
+    // Un solo "oído" para todos los botones de las citas
+    $("lista").addEventListener("click", e => {
+      const boton = e.target.closest("button[data-accion]");
+      if (boton) cambiarEstado(Number(boton.dataset.id), boton.dataset.accion);
+    });
+
+    // Si ya había una sesión abierta, entrar directo
+    sb.auth.getSession().then(r => { if (r.data.session) iniciarPanel(); });
+  </script>
+</body>
+</html>

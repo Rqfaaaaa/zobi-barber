@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zobi Barber - Reserva tu cita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --acento: #e5343d;
+            --acento2: #1e63d6;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #111;
+            color: #fff;
+        }
+
+        header {
+            padding: 24px 16px;
+            text-align: center;
+            border-bottom: 2px solid var(--acento);
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--acento);
+        }
+
+        main {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .card {
+            background: #1c1c1c;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .precio {
+            color: var(--acento);
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 6px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #1c1c1c;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--acento);
+            color: #111;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .nota {
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 12px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px 16px;
+            margin-top: 32px;
+            border-top: 1px solid #333;
+            color: #aaa;
+        }
+
+        footer h3 {
+            color: #fff;
+        }
+
+        footer a {
+            color: var(--acento);
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .aviso {
+            font-size: 14px;
+            color: lch(82.05% 0.01 296.81);
+            margin-top: 20px;
+        }
+
+        header {
+            background: linear-gradient(180deg, #1c1c1c, #111);
+            padding: 32px 16px;
+            border-bottom: 3px solid var(--acento);
+        }
+
+        h1 {
+            font-family: 'Oswald', Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 36px;
+        }
+
+        header p {
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            border-left: 4px solid var(--acento);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateX(4px);
+        }
+
+        button:hover {
+            filter: brightness(1.15);
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 12px;
+        }
+
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .galeria img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .equipo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .barbero-card {
+            background: #1c1c1c;
+            border-radius: 12px;
+            padding: 14px 8px;
+            text-align: center;
+            border-top: 3px solid var(--acento);
+        }
+
+        .barbero-card img {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--acento2);
+        }
+
+        .barbero-card b {
+            display: block;
+            margin-top: 8px;
+        }
+
+        .barbero-card span {
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            flex: 0 0 auto;
+            width: auto;
+            margin: 0;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: #1c1c1c;
+            color: #fff;
+            border: 1px solid #333;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .chip.activo {
+            background: var(--acento);
+            border-color: var(--acento);
+        }
+
+        .card {
+            cursor: pointer;
+        }
+
+        .mensaje {
+            margin-top: 14px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #7a1f24;
+        }
+
+        .confirmacion {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            background: #1c1c1c;
+            border: 1px solid #2e9e5b;
+            border-left: 4px solid #2e9e5b;
+        }
+
+        .confirmacion h3 {
+            margin: 0 0 8px;
+        }
+
+        .btn-wa {
+            display: block;
+            text-align: center;
+            margin-top: 14px;
+            padding: 14px;
+            border-radius: 8px;
+            background: #25a244;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="img/logo.png" alt="Logo de Zobi Barber's" class="logo">
+        <h1>Zobi Barber</h1>
+        <p>Reserva tu cita de manera facil y sencilla!!</p>
+    </header>
+
+    <main>
+        <h2>Servicios</h2>
+        <div id="categorias" class="chips"></div>
+        <div id="servicios"><p class="nota">Cargando servicios...</p></div>
+        <h2>Nuestros cortes</h2>
+        <div class="galeria">
+            <img src="img/corte1.jpg" alt="Corte con diseño en la nuca">
+            <img src="img/corte2.jpg" alt="Corte con diseño en la nuca">
+        </div>
+        <h2>Nuestro equipo</h2>
+        <div id="equipo" class="equipo"></div>
+        <h2>Reserva tu cita</h2>
+        <label>Tu nombre</label>
+        <input type="text" id="nombre" placeholder="Ej: Kevin">
+
+        <label>Tu celular</label>
+        <input type="tel" id="telefono" placeholder="Ej: 3001234567" inputmode="numeric" maxlength="10">
+        <p class="nota">Guardamos tu nombre y celular solo para gestionar tu cita.</p>
+
+        <label>Servicio</label>
+        <select id="selServicio"></select>
+        <p id="textoAbono"></p>
+
+        <label>Barbero</label>
+        <select id="selBarbero"></select>
+
+        <label>Fecha</label>
+        <input type="date" id="fecha">
+
+        <label>Hora</label>
+        <select id="hora"></select>
+        <div class="aviso">
+            <p>Al reservar, el barbero te enviará por WhatsApp los datos para pagar el abono. Tu turno queda confirmado
+                cuando se verifique el pago.</p>
+            <p><strong>Te recomendamos llegar 15 minutos antes de la hora solicitada para tu servicio.</strong></p>
+            <label>
+                <input type="checkbox" id="aceptoPolitica">
+                Acepto la política: si cancelo con al menos 2 horas de anticipación, mi abono queda como saldo a favor;
+                si cancelo más tarde o no asisto, el abono no se devuelve.
+            </label>
+        </div>
+
+        <div id="mensaje" class="mensaje" hidden></div>
+
+        <button id="btnReservar">Reservar</button>
+
+        <div id="confirmacion" class="confirmacion" hidden>
+            <h3>¡Tu hora quedó apartada!</h3>
+            <p id="textoConfirmacion"></p>
+            <p>Tienes 30 minutos para escribirnos y pagar el abono. Si no se confirma en ese tiempo, la hora se libera
+                para otro cliente.</p>
+            <a id="enlaceWhatsApp" class="btn-wa" href="#" target="_blank" rel="noopener">Abrir WhatsApp y pagar el
+                abono</a>
+        </div>
+        <p class="nota">Si no puedes asistir, avísanos con al menos 2 horas de anticipación para darle el turno a otro
+            cliente.</p>
+    </main>
+    <footer>
+        <h3>Encuentranos aqui</h3>
+        <p>Mz 43 Casa 36 Don Alberto</p>
+        <p>Horario: Lunes a domingo, 9:00 am - 8:00 pm</p>
+        <p><a href="https://www.instagram.com/barber_zobi?exln=ajJ5YjgwNHVlaXhx" target="_blank">Instagram</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+    <script>
+        // ---------- CONEXIÓN CON LA BASE DE DATOS ----------
+        // Pega tus dos datos (los mismos de prueba-conexion.html). Solo la clave "publishable".
+        const SUPABASE_URL = "https://lsiucqxeqnclhbleilwj.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_c_sMP2zXDxWILQFNNgm9_Q_mhjlwPKq";
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // ---------- AJUSTES (se cambian aquí, en un solo lugar) ----------
+        const numeroWhatsApp = "573054471325";   // CAMBIAR por el número de la barbería antes de publicar
+        const PORCENTAJE_ABONO = 0.50;           // debe ser IGUAL al de la función crear_reserva en la base
+        const diasMaximos = 7;
+        const horaApertura = 9;
+        const horaUltima = 19;                   // la última cita es a las 7:00 pm
+
+        // Mensajes de la base que sí se pueden mostrar tal cual al cliente
+        const MENSAJES_CONOCIDOS = [
+            "Esa hora ya fue reservada", "Esa hora ya pasó", "Nombre no válido", "Teléfono no válido",
+            "Fecha fuera del rango permitido", "Hora fuera del horario", "Ese profesional no ofrece ese servicio"
+        ];
+
+        // ---------- DATOS (ahora vienen de la base) ----------
+        const categorias = ["Todos", "Cortes", "Barba y cejas", "Combos", "Uñas", "Tratamientos"];
+        let categoriaActual = "Todos";
+        let servicios = [];       // { id, nombre, precio, categoria }
+        let profesionales = [];   // { id, nombre }
+        let relaciones = [];      // { profesional_id, servicio_id }
+        let consultaHoras = 0;    // para ignorar respuestas viejas si el cliente cambia rápido
+
+        const selServicio = document.getElementById("selServicio");
+        const selBarbero = document.getElementById("selBarbero");
+        const selHora = document.getElementById("hora");
+        const inputFecha = document.getElementById("fecha");
+        const cajaMensaje = document.getElementById("mensaje");
+        const btnReservar = document.getElementById("btnReservar");
+
+        // ---------- AYUDAS ----------
+        function esc(texto) {
+            return String(texto ?? "").replace(/[&<>"']/g, c =>
+                ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+        }
+        function dinero(n) { return "$" + Number(n).toLocaleString("es-CO"); }
+
+        // Fecha y hora actuales en Colombia (no las del computador del cliente)
+        function ahoraBogota() {
+            const partes = new Intl.DateTimeFormat("en-CA", {
+                timeZone: "America/Bogota", year: "numeric", month: "2-digit", day: "2-digit",
+                hour: "2-digit", hour12: false
+            }).formatToParts(new Date());
+            const p = {};
+            partes.forEach(x => { p[x.type] = x.value; });
+            return { fecha: p.year + "-" + p.month + "-" + p.day, hora: Number(p.hour) % 24 };
+        }
+
+        function horaBonita(texto) {
+            const h = Number(texto.split(":")[0]);
+            return (h % 12 || 12) + ":00 " + (h >= 12 ? "pm" : "am");
+        }
+
+        function mostrarMensaje(texto) {
+            cajaMensaje.textContent = texto;
+            cajaMensaje.hidden = false;
+        }
+        function ocultarMensaje() { cajaMensaje.hidden = true; }
+
+        // ---------- 1. LEER EL CATÁLOGO ----------
+        async function cargarCatalogo() {
+            const r1 = await sb.from("servicios").select("id, nombre, precio, categoria").order("id");
+            const r2 = await sb.from("profesionales").select("id, nombre").order("id");
+            const r3 = await sb.from("profesional_servicios").select("profesional_id, servicio_id");
+
+            if (r1.error || r2.error || r3.error) {
+                document.getElementById("servicios").innerHTML =
+                    '<p class="nota">No pudimos cargar los servicios. Escríbenos por ' +
+                    '<a href="https://wa.me/' + numeroWhatsApp + '" target="_blank" rel="noopener">WhatsApp</a> ' +
+                    'y te ayudamos con tu cita.</p>';
+                return;
+            }
+            servicios = r1.data;
+            profesionales = r2.data;
+            relaciones = r3.data;
+
+            dibujarCategorias();
+            dibujarServicios();
+            llenarServicios();
+            mostrarAbono();
+            llenarProfesionales();
+        }
+
+        // ---------- 2. DIBUJAR SERVICIOS ----------
+        function dibujarCategorias() {
+            const caja = document.getElementById("categorias");
+            caja.innerHTML = "";
+            categorias.forEach(c => {
+                const b = document.createElement("button");
+                b.className = "chip" + (c === categoriaActual ? " activo" : "");
+                b.textContent = c;
+                b.onclick = () => { categoriaActual = c; dibujarCategorias(); dibujarServicios(); };
+                caja.appendChild(b);
+            });
+        }
+
+        function dibujarServicios() {
+            const contenedor = document.getElementById("servicios");
+            contenedor.innerHTML = "";
+            servicios
+                .filter(s => categoriaActual === "Todos" || s.categoria === categoriaActual)
+                .forEach(s => {
+                    contenedor.innerHTML += `
+        <div class="card" data-id="${s.id}">
+          <span>${esc(s.nombre)}</span>
+          <span class="precio">${dinero(s.precio)}</span>
+        </div>`;
+                });
+        }
+
+        function elegirServicio(id) {
+            selServicio.value = String(id);
+            selServicio.dispatchEvent(new Event("change"));
+            selServicio.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        // ---------- 3. FORMULARIO: servicio -> barbero -> horas ----------
+        function llenarServicios() {
+            selServicio.innerHTML = "";
+            servicios.forEach(s => {
+                selServicio.add(new Option(s.nombre, s.id));
+            });
+        }
+
+        function llenarProfesionales() {
+            selBarbero.innerHTML = "";
+            const idServicio = Number(selServicio.value);
+            profesionales
+                .filter(p => relaciones.some(r => r.profesional_id === p.id && r.servicio_id === idServicio))
+                .forEach(p => selBarbero.add(new Option(p.nombre, p.id)));
+            llenarHoras();
+        }
+
+        async function llenarHoras() {
+            const miConsulta = ++consultaHoras;
+            const fecha = inputFecha.value;
+
+            if (!fecha || !selBarbero.value) {
+                selHora.innerHTML = '<option value="">Elige la fecha y el barbero</option>';
+                return;
+            }
+            selHora.innerHTML = '<option value="">Consultando horas...</option>';
+
+            // Le preguntamos a la base qué horas ya están tomadas
+            const { data, error } = await sb.rpc("horas_ocupadas", {
+                p_profesional: Number(selBarbero.value),
+                p_fecha: fecha
+            });
+            if (miConsulta !== consultaHoras) return;   // llegó tarde, ya hay una consulta más nueva
+
+            if (error) {
+                selHora.innerHTML = '<option value="">No pude consultar las horas</option>';
+                return;
+            }
+            const ocupadas = data.map(fila => fila.hora.slice(0, 5));
+            const ahora = ahoraBogota();
+            const esHoy = fecha === ahora.fecha;
+
+            selHora.innerHTML = "";
+            for (let h = horaApertura; h <= horaUltima; h++) {
+                const texto = String(h).padStart(2, "0") + ":00";
+                if (esHoy && h <= ahora.hora) continue;      // ya pasó
+                if (ocupadas.includes(texto)) continue;      // ya la tomó otra persona
+                selHora.add(new Option(horaBonita(texto), texto));
+            }
+            if (selHora.options.length === 0) {
+                selHora.innerHTML = '<option value="">No hay horas disponibles este día</option>';
+            }
+        }
+
+        function mostrarAbono() {
+            const s = servicios.find(x => x.id === Number(selServicio.value));
+            if (!s) return;
+            document.getElementById("textoAbono").textContent =
+                "Abono para asegurar tu turno (" + Math.round(PORCENTAJE_ABONO * 100) + "%): " +
+                dinero(Math.round(s.precio * PORCENTAJE_ABONO));
+        }
+
+        // ---------- 4. RESERVAR: guardar en la base y luego ir a WhatsApp ----------
+        async function reservar() {
+            ocultarMensaje();
+            document.getElementById("confirmacion").hidden = true;
+
+            const nombre = document.getElementById("nombre").value.trim();
+            const telefono = document.getElementById("telefono").value.replace(/\s/g, "");
+            const fecha = inputFecha.value;
+            const hora = selHora.value;
+
+            if (nombre.length < 2) { mostrarMensaje("Escribe tu nombre."); return; }
+            if (!/^3\d{9}$/.test(telefono)) {
+                mostrarMensaje("Escribe tu celular de 10 dígitos, por ejemplo 3001234567.");
+                return;
+            }
+            if (!fecha || !hora) { mostrarMensaje("Elige la fecha y la hora."); return; }
+            if (fecha < inputFecha.min || fecha > inputFecha.max) {
+                mostrarMensaje("Solo se puede reservar desde hoy hasta los próximos " + diasMaximos + " días.");
+                return;
+            }
+            if (!document.getElementById("aceptoPolitica").checked) {
+                mostrarMensaje("Debes aceptar la política de cancelación para continuar.");
+                return;
+            }
+
+            const servicio = servicios.find(s => s.id === Number(selServicio.value));
+            const barbero = profesionales.find(p => p.id === Number(selBarbero.value));
+            if (!servicio || !barbero) { mostrarMensaje("Elige el servicio y el barbero."); return; }
+
+            btnReservar.disabled = true;
+            btnReservar.textContent = "Reservando...";
+
+            const { data, error } = await sb.rpc("crear_reserva", {
+                p_nombre: nombre,
+                p_telefono: telefono,
+                p_profesional: barbero.id,
+                p_servicio: servicio.id,
+                p_fecha: fecha,
+                p_hora: hora
+            });
+
+            btnReservar.disabled = false;
+            btnReservar.textContent = "Reservar";
+
+            if (error) {
+                const conocido = MENSAJES_CONOCIDOS.find(m => error.message.includes(m));
+                mostrarMensaje(conocido ||
+                    "No pudimos guardar tu reserva. Intenta de nuevo o escríbenos por WhatsApp.");
+                llenarHoras();
+                return;
+            }
+
+            mostrarConfirmacion(data, servicio, barbero, nombre, fecha, hora);
+            llenarHoras();
+        }
+
+        function mostrarConfirmacion(idCita, servicio, barbero, nombre, fecha, hora) {
+            const abono = Math.round(servicio.precio * PORCENTAJE_ABONO);
+            const fechaBonita = new Date(fecha + "T00:00:00")
+                .toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long" });
+
+            const mensaje = `Hola, soy ${nombre} y reservé en Zobi Barber (cita #${idCita}):
+Servicio: ${servicio.nombre}
+Barbero: ${barbero.nombre}
+Fecha: ${fechaBonita}
+Hora: ${horaBonita(hora)}
+Abono (${Math.round(PORCENTAJE_ABONO * 100)}%): ${dinero(abono)}
+
+Quedo atento a los datos para pagar el abono. Acepto la política de cancelación y entiendo que debo llegar 15 minutos antes.`;
+
+            document.getElementById("textoConfirmacion").textContent =
+                servicio.nombre + " con " + barbero.nombre + ", " + fechaBonita + " a las " + horaBonita(hora) + ".";
+            document.getElementById("enlaceWhatsApp").href =
+                "https://wa.me/" + numeroWhatsApp + "?text=" + encodeURIComponent(mensaje);
+
+            const caja = document.getElementById("confirmacion");
+            caja.hidden = false;
+            caja.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        // ---------- 5. EQUIPO (por ahora fijo en la página) ----------
+        const equipo = [
+            { nombre: "Cholu", rol: "Barbero", foto: "img/barberoc.jpg" },
+            { nombre: "Andrés", rol: "Barbero", foto: "img/barberoa.jpg" },
+            { nombre: "Julher", rol: "Barbero", foto: "img/barberoj.jpg" },
+            { nombre: "Manicurista", rol: "Uñas", foto: "img/manicurista.jpg" }
+        ];
+        const contenedorEquipo = document.getElementById("equipo");
+        equipo.forEach(b => {
+            contenedorEquipo.innerHTML += `
+    <div class="barbero-card">
+      <img src="${b.foto}" alt="Foto de ${b.nombre}">
+      <b>${b.nombre}</b>
+      <span>${b.rol}</span>
+    </div>`;
+        });
+
+        // ---------- 6. FECHAS PERMITIDAS (hora de Colombia) ----------
+        (function () {
+            const hoyCo = ahoraBogota().fecha;
+            const tope = new Date(hoyCo + "T00:00:00");
+            tope.setDate(tope.getDate() + diasMaximos);
+            inputFecha.min = hoyCo;
+            inputFecha.max = tope.toLocaleDateString("en-CA");
+        })();
+
+        // ---------- 7. EVENTOS ----------
+        selServicio.addEventListener("change", () => { mostrarAbono(); llenarProfesionales(); });
+        selBarbero.addEventListener("change", llenarHoras);
+        inputFecha.addEventListener("change", llenarHoras);
+        btnReservar.addEventListener("click", reservar);
+        document.getElementById("servicios").addEventListener("click", e => {
+            const tarjeta = e.target.closest(".card");
+            if (tarjeta) elegirServicio(Number(tarjeta.dataset.id));
+        });
+
+        // ---------- ARRANQUE ----------
+        cargarCatalogo();
+    </script>
+</body>
+
+</html>
