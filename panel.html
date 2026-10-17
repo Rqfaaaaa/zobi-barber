@@ -14,45 +14,51 @@
     header { display: flex; justify-content: space-between; align-items: center; gap: 10px;
              padding: 14px 16px; border-bottom: 2px solid var(--acento); }
     header h1 { font-family: 'Oswald', Arial, sans-serif; letter-spacing: 2px; font-size: 20px; margin: 0; }
-    header .quien { font-size: 13px; color: var(--suave); }
+    .cabecera-der { display: flex; align-items: center; gap: 8px; }
+    .quien { font-size: 13px; color: var(--suave); }
     main { max-width: 720px; margin: 0 auto; padding: 16px; }
-    .caja { background: var(--panel); border: 1px solid var(--borde); border-radius: 12px; padding: 16px; }
+    .caja { background: var(--panel); border: 1px solid var(--borde); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .caja h3 { margin: 0; }
     label { display: block; font-size: 14px; margin-top: 12px; }
     input, select { width: 100%; padding: 12px; font-size: 16px; margin-top: 4px; border-radius: 8px;
                     border: 1px solid var(--borde); background: #101015; color: var(--texto); }
     .btn { padding: 10px 14px; min-height: 44px; border: 0; border-radius: 8px; font-size: 15px;
            font-weight: bold; cursor: pointer; color: #fff; background: #3a3a44; }
+    .btn.peq { min-height: 36px; padding: 6px 12px; font-size: 13px; }
     .btn.principal { background: var(--acento); width: 100%; margin-top: 16px; }
     .btn.ok { background: #2e9e5b; }
     .btn.mal { background: #7a1f24; }
-    .barra { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: end; margin-bottom: 12px; }
+    .barra { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
     .barra label { margin-top: 0; }
+    .botones-barra { display: flex; gap: 8px; margin: 8px 0 12px; }
+    .botones-barra .btn { flex: 1; }
+    .rango { font-size: 15px; font-weight: bold; margin-bottom: 8px; text-transform: capitalize; }
     .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0; }
     .stat { background: var(--panel); border: 1px solid var(--borde); border-radius: 10px; padding: 10px; }
     .stat b { display: block; font-size: 20px; margin-top: 2px; }
     .stat span { font-size: 12px; color: var(--suave); }
-    .medios { font-size: 13px; color: var(--suave); margin-bottom: 12px; }
+    .detalle-cuentas { font-size: 13px; color: var(--suave); margin-bottom: 14px; line-height: 1.6; }
+    .dia { font-size: 14px; font-weight: bold; margin: 16px 0 8px; text-transform: capitalize; color: var(--suave); }
     .cita { background: var(--panel); border: 1px solid var(--borde); border-left: 4px solid var(--suave);
             border-radius: 10px; padding: 12px; margin-bottom: 10px; }
     .cita.e-pendiente { border-left-color: #f5a524; }
     .cita.e-confirmada { border-left-color: var(--acento2); }
     .cita.e-completada { border-left-color: #2e9e5b; }
-    .cita.e-cancelada, .cita.e-no_asistio { border-left-color: #6b2227; opacity: 0.75; }
+    .cita.e-cancelada, .cita.e-no_asistio { border-left-color: #6b2227; opacity: 0.8; }
     .fila { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
     .hora { font-size: 18px; font-weight: bold; }
-    .estado { font-size: 12px; padding: 3px 8px; border-radius: 999px; background: #2a2a32; }
+    .estado { font-size: 12px; padding: 3px 8px; border-radius: 999px; background: #2a2a32; text-align: right; }
     .detalle { font-size: 14px; color: var(--suave); margin-top: 4px; }
     .detalle a { color: #8ab4ff; }
-    .acciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .acciones select { width: auto; margin: 0; min-height: 44px; }
+    .acciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: flex-end; }
+    .acciones label.mini { display: flex; flex-direction: column; font-size: 12px; color: var(--suave); margin: 0; }
+    .acciones select { width: auto; margin: 2px 0 0; min-height: 44px; }
+    .check { display: flex; gap: 8px; align-items: center; margin-top: 14px; font-size: 14px; }
+    .check input { width: auto; margin: 0; }
     #aviso, #msgLogin { margin: 10px 0; padding: 10px; border-radius: 8px; font-size: 14px; }
     #aviso.ok { background: #1d5c2e; }
     #aviso.error, #msgLogin { background: #7a1f24; }
     #msgLogin:empty { display: none; }
-    #formSinCita { margin-bottom: 12px; }
-    #formSinCita h3 { margin: 0; }
-    .check { display: flex; gap: 8px; align-items: center; margin-top: 14px; font-size: 14px; }
-    .check input { width: auto; margin: 0; }
     .vacio { text-align: center; color: var(--suave); padding: 24px 0; }
   </style>
 </head>
@@ -60,9 +66,10 @@
 
   <header>
     <h1>ZOBI BARBER'S</h1>
-    <div>
+    <div class="cabecera-der">
       <span class="quien" id="quien"></span>
-      <button class="btn" id="btnSalir" hidden>Salir</button>
+      <button class="btn peq" id="btnClave" hidden>Clave</button>
+      <button class="btn peq" id="btnSalir" hidden>Salir</button>
     </div>
   </header>
 
@@ -83,21 +90,46 @@
 
     <!-- PANTALLA 2: panel (se muestra solo con sesión iniciada) -->
     <section id="vistaPanel" hidden>
+
+      <div id="cajaClave" class="caja" hidden>
+        <h3>Cambiar mi clave</h3>
+        <label>Clave nueva (mínimo 8 caracteres)
+          <input type="password" id="claveNueva" autocomplete="new-password">
+        </label>
+        <label>Repite la clave nueva
+          <input type="password" id="claveNueva2" autocomplete="new-password">
+        </label>
+        <div class="botones-barra">
+          <button class="btn ok" id="btnGuardarClave">Guardar</button>
+          <button class="btn" id="btnCerrarClave">Cerrar</button>
+        </div>
+      </div>
+
       <div class="barra">
+        <label>Ver
+          <select id="vista">
+            <option value="dia">Un día</option>
+            <option value="semana">Una semana</option>
+            <option value="mes">Un mes</option>
+          </select>
+        </label>
         <label>Fecha
           <input type="date" id="fecha">
         </label>
+      </div>
+      <div class="botones-barra">
         <button class="btn" id="btnHoy">Hoy</button>
         <button class="btn" id="btnActualizar">Actualizar</button>
       </div>
+      <div class="rango" id="rangoTexto"></div>
 
       <label id="bloqueFiltro" hidden>Ver agenda de
         <select id="filtroProf"></select>
       </label>
 
-      <button class="btn principal" id="btnNuevoSinCita" style="margin-top:0;margin-bottom:12px">+ Agregar cliente sin cita</button>
+      <button class="btn principal" id="btnNuevoSinCita" style="margin-top:12px">+ Agregar cliente sin cita</button>
 
-      <div id="formSinCita" class="caja" hidden>
+      <div id="formSinCita" class="caja" hidden style="margin-top:12px">
         <h3>Cliente sin cita</h3>
         <label id="bloqueProfSC" hidden>Barbero
           <select id="scProf"></select>
@@ -112,7 +144,7 @@
           <input type="checkbox" id="scBloquear">
           Bloquear la siguiente hora en la página de reservas
         </label>
-        <div class="acciones">
+        <div class="botones-barra">
           <button class="btn ok" id="btnGuardarSC">Agregar</button>
           <button class="btn" id="btnCerrarSC">Cerrar</button>
         </div>
@@ -120,7 +152,7 @@
 
       <div id="aviso" hidden></div>
       <div class="stats" id="stats"></div>
-      <div class="medios" id="medios"></div>
+      <div class="detalle-cuentas" id="detalleCuentas"></div>
       <div id="lista"></div>
     </section>
 
@@ -128,13 +160,11 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
   <script>
-    // ---------- CONEXIÓN (pega tus dos datos, igual que en prueba-conexion.html) ----------
-    const SUPABASE_URL = "https://lsiucqxeqnclhbleilwj.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_c_sMP2zXDxWILQFNNgm9_Q_mhjlwPKq";
+    // ---------- CONEXIÓN (pega tus dos datos, igual que en index.html) ----------
+    const SUPABASE_URL = "https://bkfzyudtyguchmmtkjjm.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_VwHmxpDkUOpvax0wPA4iGA_vYT73xYB";
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Estos medios de pago deben ser EXACTAMENTE los mismos que acepta la función de la base
-    const MEDIOS_PAGO = ["Efectivo", "Nequi", "Daviplata", "Transferencia"];
     const ETIQUETA = { pendiente: "Pendiente", confirmada: "Confirmada", completada: "Completada",
                        cancelada: "Cancelada", no_asistio: "No asistió", en_espera: "En espera" };
 
@@ -142,8 +172,10 @@
     let perfil = null;            // { rol, profesional_id } de quien entró
     let nombreServicio = {};      // id -> nombre del servicio
     let nombreProfesional = {};   // id -> nombre del profesional
-    let citas = [];               // citas del día que la base le deja ver a esta persona
     let relaciones = [];          // qué profesional hace qué servicio
+    let mediosPago = [];          // medios de pago activos (vienen de la base)
+    let porcentajes = {};         // porcentaje que se lleva cada profesional (cada quien ve solo el suyo)
+    let citas = [];               // citas que la base le deja ver a esta persona en el periodo
 
     const $ = id => document.getElementById(id);
 
@@ -156,6 +188,7 @@
     }
     function dinero(n) { return "$" + Number(n).toLocaleString("es-CO"); }
     function hoyBogota() { return new Date().toLocaleDateString("en-CA", { timeZone: "America/Bogota" }); }
+    function formatoFecha(d) { return d.toLocaleDateString("en-CA"); }
     function horaBonita(h) {
       const [hh, mm] = h.split(":");
       const n = Number(hh);
@@ -163,6 +196,9 @@
     }
     function horaLlegada(iso) {
       return new Date(iso).toLocaleTimeString("es-CO", { timeZone: "America/Bogota", hour: "numeric", minute: "2-digit" });
+    }
+    function fechaLarga(f) {
+      return new Date(f + "T00:00:00").toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long" });
     }
     function aviso(texto, esOk) {
       const caja = $("aviso");
@@ -176,11 +212,12 @@
       $("vistaPanel").hidden = true;
       $("vistaLogin").hidden = false;
       $("btnSalir").hidden = true;
+      $("btnClave").hidden = true;
       $("quien").textContent = "";
       $("msgLogin").textContent = mensaje || "";
     }
 
-    // ---------- PASO 1: ENTRAR ----------
+    // ---------- ENTRAR Y SALIR ----------
     async function entrar() {
       $("msgLogin").textContent = "";
       const { error } = await sb.auth.signInWithPassword({
@@ -197,7 +234,20 @@
       mostrarLogin();
     }
 
-    // ---------- PASO 2: SABER QUIÉN ES (dueño o profesional) ----------
+    async function guardarClave() {
+      const a = $("claveNueva").value;
+      const b = $("claveNueva2").value;
+      if (a.length < 8) { aviso("La clave debe tener al menos 8 caracteres.", false); return; }
+      if (a !== b) { aviso("Las dos claves no coinciden.", false); return; }
+      const { error } = await sb.auth.updateUser({ password: a });
+      if (error) { aviso("No se pudo cambiar la clave: " + error.message, false); return; }
+      $("claveNueva").value = "";
+      $("claveNueva2").value = "";
+      $("cajaClave").hidden = true;
+      aviso("Clave cambiada.", true);
+    }
+
+    // ---------- SABER QUIÉN ES (dueño o profesional) Y CARGAR LO BÁSICO ----------
     async function iniciarPanel() {
       const { data: sesion } = await sb.auth.getUser();
       const usuario = sesion && sesion.user;
@@ -212,21 +262,31 @@
       }
       perfil = rp.data;
 
-      // Nombres para mostrar (los ids solos no le dicen nada a nadie)
+      // Nombres para mostrar, qué hace cada quien y los medios de pago
       const rs = await sb.from("servicios").select("id, nombre");
       const rpf = await sb.from("profesionales").select("id, nombre");
-      if (rs.error || rpf.error) { mostrarLogin("No pude leer el catálogo."); return; }
+      const rr = await sb.from("profesional_servicios").select("profesional_id, servicio_id");
+      const rm = await sb.from("medios_pago").select("nombre").eq("activo", true).order("orden");
+      const rc = await sb.from("comisiones").select("profesional_id, porcentaje");
+      if (rs.error || rpf.error || rr.error || rm.error || rc.error) {
+        await sb.auth.signOut();
+        mostrarLogin("No pude leer los datos básicos. Intenta de nuevo.");
+        return;
+      }
       nombreServicio = {};
       nombreProfesional = {};
       rs.data.forEach(s => { nombreServicio[s.id] = s.nombre; });
       rpf.data.forEach(p => { nombreProfesional[p.id] = p.nombre; });
-      const rr = await sb.from("profesional_servicios").select("profesional_id, servicio_id");
-      relaciones = rr.error ? [] : rr.data;
+      relaciones = rr.data;
+      mediosPago = rm.data.map(m => m.nombre);
+      porcentajes = {};
+      rc.data.forEach(c => { porcentajes[c.profesional_id] = c.porcentaje; });
 
       // Preparar pantalla según el rol
       $("vistaLogin").hidden = true;
       $("vistaPanel").hidden = false;
       $("btnSalir").hidden = false;
+      $("btnClave").hidden = false;
       $("fecha").value = hoyBogota();
 
       if (perfil.rol === "dueno") {
@@ -234,16 +294,11 @@
         $("bloqueFiltro").hidden = false;
         $("filtroProf").innerHTML = '<option value="todos">Todos</option>' +
           rpf.data.map(p => `<option value="${p.id}">${esc(p.nombre)}</option>`).join("");
-      } else {
-        $("quien").textContent = nombreProfesional[perfil.profesional_id] || "Profesional";
-        $("bloqueFiltro").hidden = true;
-      }
-
-      // Formulario de clientes sin cita: el dueño elige barbero, el barbero ya es él mismo
-      if (perfil.rol === "dueno") {
         $("bloqueProfSC").hidden = false;
         $("scProf").innerHTML = rpf.data.map(p => `<option value="${p.id}">${esc(p.nombre)}</option>`).join("");
       } else {
+        $("quien").textContent = nombreProfesional[perfil.profesional_id] || "Profesional";
+        $("bloqueFiltro").hidden = true;
         $("bloqueProfSC").hidden = true;
       }
       llenarServiciosSC();
@@ -251,7 +306,274 @@
       cargarCitas();
     }
 
-    // Servicios que ofrece el profesional elegido (para el formulario de clientes sin cita)
+    // ---------- PERIODO: un día, una semana (lunes a domingo) o un mes ----------
+    function rangoActual() {
+      const base = $("fecha").value || hoyBogota();
+      const vista = $("vista").value;
+      if (vista === "dia") return [base, base];
+      const d = new Date(base + "T00:00:00");
+      if (vista === "semana") {
+        const desdeLunes = (d.getDay() + 6) % 7;            // lunes = 0
+        const inicio = new Date(d);
+        inicio.setDate(d.getDate() - desdeLunes);
+        const fin = new Date(inicio);
+        fin.setDate(inicio.getDate() + 6);
+        return [formatoFecha(inicio), formatoFecha(fin)];
+      }
+      const inicio = new Date(d.getFullYear(), d.getMonth(), 1);
+      const fin = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+      return [formatoFecha(inicio), formatoFecha(fin)];
+    }
+
+    function textoDelRango() {
+      const [desde, hasta] = rangoActual();
+      const vista = $("vista").value;
+      if (vista === "dia") return fechaLarga(desde);
+      if (vista === "semana") return "Semana del " + fechaLarga(desde) + " al " + fechaLarga(hasta);
+      return new Date(desde + "T00:00:00").toLocaleDateString("es-CO", { month: "long", year: "numeric" });
+    }
+
+    // ---------- LEER LAS CITAS (la base decide cuáles puede ver cada quien) ----------
+    async function cargarCitas() {
+      $("aviso").hidden = true;
+      const [desde, hasta] = rangoActual();
+      $("rangoTexto").textContent = textoDelRango();
+
+      const { data, error } = await sb.from("citas")
+        .select("id, hora, nombre_cliente, telefono_cliente, estado, precio, abono, metodo_abono, metodo_pago, profesional_id, servicio_id, creada_en, origen, bloquea_hora, fecha, comision")
+        .gte("fecha", desde).lte("fecha", hasta)
+        .order("fecha", { ascending: true })
+        .order("hora", { ascending: true })
+        .order("creada_en", { ascending: true });
+      if (error) { aviso("No pude cargar las citas: " + error.message, false); return; }
+      citas = data;
+      dibujar();
+    }
+
+    // ---------- LAS CUENTAS ----------
+    // Reglas (acordadas con la barbería):
+    //  - Ganado = servicios completados (precio completo) + abonos que se quedó la barbería (no asistió).
+    //  - Un abono de una cita cancelada con aviso es SALDO A FAVOR del cliente: no cuenta como ganancia.
+    //  - "Recibido por medio de pago" = abonos recibidos + lo que se pagó al terminar.
+    function calcular(lista) {
+      const r = { porAtender: 0, completadas: 0, noAsistio: 0, valorCompletadas: 0, retenidos: 0,
+                  saldoFavor: 0, comisionTotal: 0, recibido: {}, porDia: {} };
+      const sumar = (medio, monto) => {
+        if (medio && monto > 0) r.recibido[medio] = (r.recibido[medio] || 0) + monto;
+      };
+      const dia = f => {
+        if (!r.porDia[f]) r.porDia[f] = { ganado: 0, comision: 0, hechas: 0 };
+        return r.porDia[f];
+      };
+      lista.forEach(c => {
+        if (c.estado === "pendiente" || c.estado === "confirmada") r.porAtender++;
+        if (c.metodo_abono) sumar(c.metodo_abono, c.abono);              // el abono ya entró
+        if (c.estado === "completada") {
+          r.completadas++;
+          r.valorCompletadas += c.precio;
+          r.comisionTotal += c.comision;                                  // lo que le toca al profesional
+          sumar(c.metodo_pago, c.precio - c.abono);                       // lo que faltaba por pagar
+          const d = dia(c.fecha);
+          d.ganado += c.precio;
+          d.comision += c.comision;
+          d.hechas++;
+        }
+        if (c.estado === "no_asistio") {
+          r.noAsistio++;
+          if (c.metodo_abono) { r.retenidos += c.abono; dia(c.fecha).ganado += c.abono; }
+        }
+        if (c.estado === "cancelada" && c.metodo_abono) r.saldoFavor += c.abono;
+      });
+      r.ganado = r.valorCompletadas + r.retenidos;
+      return r;
+    }
+
+    // ---------- DIBUJAR ----------
+    function visiblesActuales() {
+      if (perfil.rol === "dueno" && $("filtroProf").value !== "todos") {
+        return citas.filter(c => String(c.profesional_id) === $("filtroProf").value);
+      }
+      return citas;
+    }
+
+    function dibujar() {
+      const visibles = visiblesActuales();
+      dibujarResumen(visibles);
+      dibujarLista(visibles);
+    }
+
+    function dibujarResumen(visibles) {
+      const r = calcular(visibles);
+      const esDueno = perfil.rol === "dueno";
+
+      if (esDueno) {
+        $("stats").innerHTML = `
+          <div class="stat"><span>Por atender</span><b>${r.porAtender}</b></div>
+          <div class="stat"><span>Completadas</span><b>${r.completadas}</b></div>
+          <div class="stat"><span>Total ganado</span><b>${dinero(r.ganado)}</b></div>
+          <div class="stat"><span>Para los barberos</span><b>${dinero(r.comisionTotal)}</b></div>`;
+      } else {
+        const pct = porcentajes[perfil.profesional_id];
+        const etiquetaGanancia = pct !== undefined ? "Tu ganancia (" + pct + "%)" : "Tu ganancia";
+        $("stats").innerHTML = `
+          <div class="stat"><span>Por atender</span><b>${r.porAtender}</b></div>
+          <div class="stat"><span>Completadas</span><b>${r.completadas}</b></div>
+          <div class="stat"><span>Valor de tus cortes</span><b>${dinero(r.valorCompletadas)}</b></div>
+          <div class="stat"><span>${etiquetaGanancia}</span><b>${dinero(r.comisionTotal)}</b></div>`;
+      }
+
+      const lineas = [];
+      if (esDueno) {
+        lineas.push("Queda para la barbería: " + dinero(r.ganado - r.comisionTotal) + " (incluye los abonos retenidos)");
+      }
+      lineas.push("Servicios completados: " + dinero(r.valorCompletadas));
+      if (esDueno) {
+        lineas.push("Abonos que se quedó la barbería (no asistió): " + dinero(r.retenidos));
+      }
+      const partes = Object.keys(r.recibido).map(m => esc(m) + " " + dinero(r.recibido[m]));
+      lineas.push("Recibido por medio de pago: " + (partes.length ? partes.join(" · ") : "nada todavía"));
+      if (r.saldoFavor > 0) {
+        lineas.push("Saldos a favor de clientes (no cuentan como ganancia): " + dinero(r.saldoFavor));
+      }
+
+      // El dueño ve cuánto hizo cada barbero y cuánto le corresponde
+      if (esDueno) {
+        const porProf = {};
+        visibles.forEach(c => {
+          if (c.estado !== "completada") return;
+          const nombre = nombreProfesional[c.profesional_id] || "?";
+          if (!porProf[nombre]) porProf[nombre] = { valor: 0, hechas: 0, parte: 0 };
+          porProf[nombre].valor += c.precio;
+          porProf[nombre].hechas++;
+          porProf[nombre].parte += c.comision;
+        });
+        const filas = Object.keys(porProf).map(n =>
+          esc(n) + ": " + porProf[n].hechas + (porProf[n].hechas === 1 ? " servicio" : " servicios") + " · " + dinero(porProf[n].valor) +
+          " · su parte " + dinero(porProf[n].parte));
+        if (filas.length) lineas.push("Por barbero → " + filas.join(" | "));
+      }
+
+      // En semana y mes: el total de cada día
+      const [desde, hasta] = rangoActual();
+      if (desde !== hasta) {
+        const dias = Object.keys(r.porDia).sort();
+        if (dias.length) {
+          const filas = dias.map(f => {
+            const corto = new Date(f + "T00:00:00").toLocaleDateString("es-CO", { weekday: "short", day: "numeric" });
+            const monto = esDueno ? r.porDia[f].ganado : r.porDia[f].comision;
+            return esc(corto) + " " + dinero(monto) + " (" + r.porDia[f].hechas + ")";
+          });
+          lineas.push((esDueno ? "Total ganado por día" : "Tu ganancia por día") + " → " + filas.join(" · "));
+        }
+      }
+      $("detalleCuentas").innerHTML = lineas.map(l => `<div>${l}</div>`).join("");
+    }
+
+    function dibujarLista(visibles) {
+      if (visibles.length === 0) {
+        $("lista").innerHTML = '<div class="vacio">No hay citas en este periodo.</div>';
+        return;
+      }
+      const [desde, hasta] = rangoActual();
+      let html = "";
+      let fechaActual = "";
+      visibles.forEach(c => {
+        if (desde !== hasta && c.fecha !== fechaActual) {      // en semana y mes, separar por día
+          fechaActual = c.fecha;
+          html += `<div class="dia">${esc(fechaLarga(c.fecha))}</div>`;
+        }
+        html += tarjeta(c);
+      });
+      $("lista").innerHTML = html;
+    }
+
+    function etiquetaEstado(c) {
+      if (c.estado === "cancelada" && c.metodo_abono) return "Cancelada · saldo a favor";
+      if (c.estado === "no_asistio" && c.metodo_abono) return "No asistió · abono retenido";
+      return ETIQUETA[c.estado] || esc(c.estado);
+    }
+
+    function tarjeta(c) {
+      const sinCita = c.origen === "sin_cita";
+      const titulo = sinCita ? "Sin cita · llegó " + horaLlegada(c.creada_en) : horaBonita(c.hora);
+      const contacto = c.telefono_cliente
+        ? ` · <a href="https://wa.me/57${esc(c.telefono_cliente)}" target="_blank" rel="noopener">${esc(c.telefono_cliente)}</a>`
+        : "";
+      let pagos;
+      if (sinCita) {
+        pagos = dinero(c.precio)
+          + (c.metodo_pago ? " · pagó con " + esc(c.metodo_pago) : "")
+          + (c.bloquea_hora ? " · siguiente hora bloqueada en la web" : "");
+      } else {
+        pagos = dinero(c.precio) + " · abono " + dinero(c.abono)
+          + (c.metodo_abono ? " (" + esc(c.metodo_abono) + ")" : " (sin recibir)")
+          + (c.metodo_pago ? " · resto con " + esc(c.metodo_pago) : "");
+      }
+      return `
+        <div class="cita e-${c.estado}">
+          <div class="fila">
+            <span class="hora">${titulo}</span>
+            <span class="estado">${etiquetaEstado(c)}</span>
+          </div>
+          <div class="detalle">${esc(c.nombre_cliente)}${contacto}</div>
+          <div class="detalle">${esc(nombreServicio[c.servicio_id] || "")}${perfil.rol === "dueno" ? " · con " + esc(nombreProfesional[c.profesional_id] || "") : ""}</div>
+          <div class="detalle">${pagos}</div>
+          <div class="acciones">${botones(c)}</div>
+        </div>`;
+    }
+
+    // Lista desplegable de medios de pago, con una etiqueta que dice para qué es
+    function selectorMedio(c, etiqueta) {
+      const opciones = mediosPago.map(m => `<option>${esc(m)}</option>`).join("");
+      return `<label class="mini">${etiqueta}<select id="mp-${c.id}">${opciones}</select></label>`;
+    }
+
+    // Qué botones se muestran según el estado de la cita
+    function botones(c) {
+      const sinCita = c.origen === "sin_cita";
+      if (c.estado === "pendiente") {
+        return selectorMedio(c, "Abono pagado con")
+          + `<button class="btn ok" data-accion="confirmada" data-id="${c.id}">Abono recibido</button>
+             <button class="btn mal" data-accion="cancelada" data-id="${c.id}">Cancelar</button>`;
+      }
+      if (c.estado === "confirmada" && sinCita) {
+        return selectorMedio(c, "Pagó con")
+          + `<button class="btn ok" data-accion="completada" data-id="${c.id}">Completar</button>
+             <button class="btn mal" data-accion="cancelada" data-id="${c.id}">Cancelar</button>`;
+      }
+      if (c.estado === "confirmada") {
+        return selectorMedio(c, "Resto (" + dinero(c.precio - c.abono) + ") pagado con")
+          + `<button class="btn ok" data-accion="completada" data-id="${c.id}">Completar</button>
+             <button class="btn" data-accion="cancelada" data-id="${c.id}">Canceló con aviso</button>
+             <button class="btn mal" data-accion="no_asistio" data-id="${c.id}">No asistió / canceló tarde</button>`;
+      }
+      return "";
+    }
+
+    // ---------- CAMBIAR EL ESTADO (llama a la función de la base de datos) ----------
+    async function cambiarEstado(id, estado) {
+      const c = citas.find(x => x.id === id);
+      if (!c) return;
+
+      if (estado === "cancelada") {
+        const texto = (c.estado === "confirmada" && c.abono > 0)
+          ? "¿Canceló con aviso? El abono de " + dinero(c.abono) + " queda como saldo a favor del cliente."
+          : "¿Cancelar esta cita? La hora quedará libre.";
+        if (!confirm(texto)) return;
+      }
+      if (estado === "no_asistio" &&
+          !confirm("¿No asistió o canceló tarde? La barbería se queda con el abono de " + dinero(c.abono) + ".")) return;
+
+      const metodo = (estado === "confirmada" || estado === "completada") ? $("mp-" + id).value : null;
+      const { error } = await sb.rpc("cambiar_estado_cita", {
+        p_id: id, p_estado: estado, p_metodo_pago: metodo
+      });
+      if (error) { aviso(error.message, false); return; }
+      await cargarCitas();
+      aviso("Listo, cita actualizada.", true);
+    }
+
+    // ---------- CLIENTES SIN CITA ----------
     function llenarServiciosSC() {
       const idProf = perfil.rol === "dueno" ? Number($("scProf").value) : perfil.profesional_id;
       const ids = relaciones.filter(r => r.profesional_id === idProf).map(r => r.servicio_id);
@@ -260,7 +582,6 @@
         .map(id => `<option value="${id}">${esc(nombreServicio[id])}</option>`).join("");
     }
 
-    // Guardar un cliente que llegó sin reserva
     async function guardarSinCita() {
       const servicio = Number($("scServicio").value);
       if (!servicio) { aviso("Elige el servicio.", false); return; }
@@ -276,112 +597,23 @@
       $("formSinCita").hidden = true;
       $("scNombre").value = "";
       $("scBloquear").checked = false;
+      $("vista").value = "dia";
       $("fecha").value = hoyBogota();          // los clientes sin cita siempre son de hoy
       await cargarCitas();
       aviso("Cliente agregado. Cuando termines el servicio, toca Completar.", true);
-    }
-
-    // ---------- PASO 3: LEER LAS CITAS (la base decide cuáles puede ver cada quien) ----------
-    async function cargarCitas() {
-      $("aviso").hidden = true;
-      const { data, error } = await sb.from("citas")
-        .select("id, hora, nombre_cliente, telefono_cliente, estado, precio, abono, metodo_pago, profesional_id, servicio_id, creada_en, origen, bloquea_hora")
-        .eq("fecha", $("fecha").value)
-        .order("hora", { ascending: true });
-      if (error) { aviso("No pude cargar las citas: " + error.message, false); return; }
-      citas = data;
-      dibujar();
-    }
-
-    // ---------- PASO 4: DIBUJAR ----------
-    function dibujar() {
-      let visibles = citas;
-      if (perfil.rol === "dueno" && $("filtroProf").value !== "todos") {
-        visibles = citas.filter(c => String(c.profesional_id) === $("filtroProf").value);
-      }
-
-      // Resumen del día
-      const porAtender = visibles.filter(c => c.estado === "pendiente" || c.estado === "confirmada").length;
-      const hechas = visibles.filter(c => c.estado === "completada");
-      const totalHechas = hechas.reduce((suma, c) => suma + c.precio, 0);
-      const noAsistio = visibles.filter(c => c.estado === "no_asistio").length;
-      $("stats").innerHTML = `
-        <div class="stat"><span>Por atender</span><b>${porAtender}</b></div>
-        <div class="stat"><span>Completadas</span><b>${hechas.length}</b></div>
-        <div class="stat"><span>Total completado</span><b>${dinero(totalHechas)}</b></div>
-        <div class="stat"><span>No asistieron</span><b>${noAsistio}</b></div>`;
-
-      const porMedio = {};
-      hechas.forEach(c => { porMedio[c.metodo_pago] = (porMedio[c.metodo_pago] || 0) + c.precio; });
-      const partes = Object.keys(porMedio).map(m => esc(m) + ": " + dinero(porMedio[m]));
-      $("medios").textContent = partes.length ? "Por medio de pago → " + partes.join(" · ") : "";
-
-      // Lista de citas
-      if (visibles.length === 0) {
-        $("lista").innerHTML = '<div class="vacio">No hay citas para este día.</div>';
-        return;
-      }
-      $("lista").innerHTML = visibles.map(c => {
-        const sinCita = c.origen === "sin_cita";
-        const titulo = sinCita ? "Sin cita · llegó " + horaLlegada(c.creada_en) : horaBonita(c.hora);
-        const contacto = c.telefono_cliente
-          ? ` · <a href="https://wa.me/57${esc(c.telefono_cliente)}" target="_blank" rel="noopener">${esc(c.telefono_cliente)}</a>`
-          : "";
-        const pagoFinal = c.metodo_pago ? " · pagó con " + esc(c.metodo_pago) : "";
-        const dinero1 = sinCita
-          ? dinero(c.precio) + pagoFinal + (c.bloquea_hora ? " · siguiente hora bloqueada en la web" : "")
-          : dinero(c.precio) + " · abono " + dinero(c.abono) + pagoFinal;
-        return `
-        <div class="cita e-${c.estado}">
-          <div class="fila">
-            <span class="hora">${titulo}</span>
-            <span class="estado">${ETIQUETA[c.estado] || esc(c.estado)}</span>
-          </div>
-          <div class="detalle">${esc(c.nombre_cliente)}${contacto}</div>
-          <div class="detalle">${esc(nombreServicio[c.servicio_id] || "")}${perfil.rol === "dueno" ? " · con " + esc(nombreProfesional[c.profesional_id] || "") : ""}</div>
-          <div class="detalle">${dinero1}</div>
-          <div class="acciones">${botones(c)}</div>
-        </div>`;
-      }).join("");
-    }
-
-    // Qué botones se muestran según el estado de la cita
-    function botones(c) {
-      if (c.estado === "pendiente") {
-        return `<button class="btn ok" data-accion="confirmada" data-id="${c.id}">Abono recibido</button>
-                <button class="btn mal" data-accion="cancelada" data-id="${c.id}">Cancelar</button>`;
-      }
-      if (c.estado === "confirmada") {
-        const opciones = MEDIOS_PAGO.map(m => `<option>${m}</option>`).join("");
-        return `<select id="mp-${c.id}">${opciones}</select>
-                <button class="btn ok" data-accion="completada" data-id="${c.id}">Completar</button>
-                ${c.origen === "sin_cita" ? "" : `<button class="btn" data-accion="no_asistio" data-id="${c.id}">No asistió</button>`}
-                <button class="btn mal" data-accion="cancelada" data-id="${c.id}">Cancelar</button>`;
-      }
-      return "";
-    }
-
-    // ---------- PASO 5: CAMBIAR EL ESTADO (llama a la función de la base de datos) ----------
-    async function cambiarEstado(id, estado) {
-      if (estado === "cancelada" && !confirm("¿Cancelar esta cita? La hora quedará libre.")) return;
-      if (estado === "no_asistio" && !confirm("¿Marcar que el cliente no asistió?")) return;
-
-      const metodo = estado === "completada" ? $("mp-" + id).value : null;
-      const { error } = await sb.rpc("cambiar_estado_cita", {
-        p_id: id, p_estado: estado, p_metodo_pago: metodo
-      });
-      if (error) { aviso(error.message, false); return; }
-      await cargarCitas();
-      aviso("Listo, cita actualizada.", true);
     }
 
     // ---------- CONECTAR BOTONES Y EVENTOS ----------
     $("btnEntrar").addEventListener("click", entrar);
     $("clave").addEventListener("keydown", e => { if (e.key === "Enter") entrar(); });
     $("btnSalir").addEventListener("click", salir);
+    $("btnClave").addEventListener("click", () => { $("cajaClave").hidden = !$("cajaClave").hidden; });
+    $("btnCerrarClave").addEventListener("click", () => { $("cajaClave").hidden = true; });
+    $("btnGuardarClave").addEventListener("click", guardarClave);
     $("btnHoy").addEventListener("click", () => { $("fecha").value = hoyBogota(); cargarCitas(); });
     $("btnActualizar").addEventListener("click", cargarCitas);
     $("fecha").addEventListener("change", cargarCitas);
+    $("vista").addEventListener("change", cargarCitas);
     $("filtroProf").addEventListener("change", dibujar);
     $("btnNuevoSinCita").addEventListener("click", () => { $("formSinCita").hidden = !$("formSinCita").hidden; });
     $("btnCerrarSC").addEventListener("click", () => { $("formSinCita").hidden = true; });
